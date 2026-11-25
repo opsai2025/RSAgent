@@ -9,6 +9,7 @@ opencv-python==4.11.0.86
 huggingface-hub==0.32.4
 PyYAML==6.0.2
 rasterio==1.4.3
+Pillow
 shapely==2.1.1
 numba==0.62.1
 llvmlite==0.45.1

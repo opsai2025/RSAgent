@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1600 1060" role="img" aria-labelledby="title desc">
+  <title id="title">RSAgent architecture</title>
+  <desc id="desc">An image and question go to the planner. The orchestrator runs selected model workers, optionally uses vision language reasoning, and returns answers, visualizations and geospatial artifacts. Field requests combine segmentation, building masks and field proposals.</desc>
+  <defs>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#091625"/><stop offset="1" stop-color="#102a38"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#5ee4c4"/><stop offset="1" stop-color="#6ebaff"/></linearGradient>
+    <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#6ee0d0"/></marker>
+    <style>
+      text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#eef8f7} .muted{fill:#a8c0ca;font-size:21px} .small{fill:#a8c0ca;font-size:18px} .label{fill:#6ee0d0;font-weight:700;font-size:18px;letter-spacing:2px} .heading{font-size:26px;font-weight:700} .card{fill:#142d3b;stroke:#315267;stroke-width:2} .line{fill:none;stroke:#6ee0d0;stroke-width:3;marker-end:url(#arrow)}
+    </style>
+  </defs>
+  <rect width="1600" height="1060" rx="30" fill="url(#bg)"/>
+  <text x="70" y="78" class="label">RSAGENT  /  SYSTEM OVERVIEW</text>
+  <text x="70" y="135" font-size="46" font-weight="750">From a question to spatial evidence</text>
+  <text x="70" y="175" class="muted">The planner chooses a workflow; only the models needed for that request are invoked.</text>
+
+  <rect x="70" y="220" width="265" height="163" rx="20" class="card"/>
+  <text x="94" y="257" class="label">01  INPUT</text>
+  <text x="94" y="302" class="heading">Image + question</text>
+  <text x="94" y="336" class="small">Upload imagery and write</text><text x="94" y="363" class="small">or compose a request.</text>
+
+  <path d="M335 301 H390" class="line"/>
+  <rect x="395" y="220" width="315" height="163" rx="20" class="card"/>
+  <text x="420" y="257" class="label">02  PLAN</text>
+  <text x="420" y="302" class="heading">Router + rules</text>
+  <text x="420" y="336" class="small">Interpret intent, targets,</text><text x="420" y="363" class="small">constraints and presentation.</text>
+
+  <path d="M710 301 H765" class="line"/>
+  <rect x="770" y="220" width="340" height="163" rx="20" class="card"/>
+  <text x="795" y="257" class="label">03  EXECUTE</text>
+  <text x="795" y="302" class="heading">Orchestrator</text>
+  <text x="795" y="336" class="small">Runs selected workers and</text><text x="795" y="363" class="small">collects their spatial evidence.</text>
+
+  <path d="M1110 301 H1165" class="line"/>
+  <rect x="1170" y="220" width="360" height="163" rx="20" fill="#153d43" stroke="#4a9e98" stroke-width="2"/>
+  <text x="1195" y="257" class="label">04  REVIEW &amp; RETURN</text>
+  <text x="1195" y="302" class="heading">Answer + artifacts</text>
+  <text x="1195" y="336" class="small">Optional VLM interpretation;</text><text x="1195" y="363" class="small">maps, masks, trace and exports.</text>
+
+  <path d="M940 383 V438" class="line"/>
+  <rect x="70" y="452" width="1460" height="315" rx="24" fill="#0d2331" stroke="#315267" stroke-width="2"/>
+  <text x="100" y="497" class="label">SELECTED MODEL WORKERS  /  SEPARATE PYTHON ENVIRONMENTS</text>
+  <rect x="100" y="525" width="325" height="195" rx="16" class="card"/>
+  <text x="124" y="568" font-size="25" font-weight="700">LAE-DINO</text><text x="124" y="603" class="muted">Object detection</text>
+  <text x="124" y="644" class="small">Text-guided classes → boxes</text><text x="124" y="672" class="small">and scores, filtered by NMS.</text>
+  <rect x="444" y="525" width="325" height="195" rx="16" class="card"/>
+  <text x="468" y="568" font-size="25" font-weight="700">SegEarth-OV-3</text><text x="468" y="603" class="muted">Land-cover segmentation</text>
+  <text x="468" y="644" class="small">Open-vocabulary semantic</text><text x="468" y="672" class="small">class masks and coverage.</text>
+  <rect x="788" y="525" width="325" height="195" rx="16" class="card"/>
+  <text x="812" y="568" font-size="25" font-weight="700">UniBuild</text><text x="812" y="603" class="muted">Building extraction</text>
+  <text x="812" y="644" class="small">Building probability, mask</text><text x="812" y="672" class="small">and connected components.</text>
+  <rect x="1132" y="525" width="368" height="195" rx="16" class="card"/>
+  <text x="1156" y="568" font-size="25" font-weight="700">Delineate Anything v2</text><text x="1156" y="603" class="muted">Field delineation</text>
+  <text x="1156" y="644" class="small">Full-scene field candidates</text><text x="1156" y="672" class="small">and polygon geometry.</text>
+
+  <rect x="70" y="802" width="950" height="160" rx="20" fill="#183c3d" stroke="#3d817b" stroke-width="2"/>
+  <text x="96" y="841" class="label">FIELD WORKFLOW</text>
+  <text x="96" y="879" class="muted">Delineate proposals + SegEarth land-cover evidence + UniBuild building masks</text>
+  <text x="96" y="914" class="muted">→ semantic checks → VLM review of eligible candidates → selected field exports</text>
+  <rect x="1040" y="802" width="490" height="160" rx="20" class="card"/>
+  <text x="1065" y="841" class="label">LARGE IMAGES</text>
+  <text x="1065" y="879" class="small">Other tasks may run as independent tiles;</text>
+  <text x="1065" y="908" class="small">their answers are not automatically merged.</text>
+  <text x="70" y="1015" class="small">Results depend on configured models and imagery. Check model evidence and spatial outputs before use.</text>
+  <rect x="70" y="1035" width="1460" height="4" rx="2" fill="url(#accent)"/>
+</svg>

@@ -7,7 +7,7 @@
 #   CPU only (Windows or Linux):
 #     pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
 #
-#   pip install -r requirements.txt
+#   pip install -r requirements_segearth.txt
 #
 # The script runs on CPU as well - it disables bf16 autocast automatically and
 # stubs out triton and pycocotools, which have no wheels for CPU / recent Python
@@ -18,10 +18,9 @@ torch>=2.7
 torchvision>=0.22
 
 # --- pulled in at "import sam3" time (verified against the vendored sam3 package) ---
-# NOTE: upstream sam3 pins numpy<2, but nothing in the package uses an API that
-# numpy 2 removed, and torch >= 2.3 is built against numpy 2. Do not add the
-# upper pin back: numpy 1.26 has no wheel for Python >= 3.13 and pip would try
-# to compile it from source (which needs MSVC on Windows).
+# The integration was used with NumPy 2 locally, but upstream compatibility
+# and available binary wheels vary with the SAM 3 and Python versions.
+# Validate the complete environment on your target platform.
 numpy>=1.26
 Pillow>=10.0
 timm>=1.0.17

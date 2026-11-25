@@ -37,7 +37,31 @@ from orchestrator import run_tiled, resume_decision
 
 Image.MAX_IMAGE_PIXELS = config.MAX_IMAGE_PIXELS
 
-st.set_page_config(page_title="Remote Sensing Agent V4", page_icon="🛰️", layout="wide")
+st.set_page_config(page_title="RSAgent Studio", page_icon="🛰️", layout="wide")
+with st.sidebar:
+    ui_mode = st.radio("Interface", ["Studio", "Classic"], horizontal=True,
+                       help="Classic keeps the original layout. Your analysis and tools are the same.")
+if ui_mode == "Studio":
+    st.markdown("""
+    <style>
+    .stApp { background: #f5f8fb; }
+    [data-testid="stSidebar"] { background: #ecf2f5; }
+    [data-testid="stMainBlockContainer"] { padding-top: 2.2rem; max-width: 1500px; }
+    .rs-hero { background: linear-gradient(115deg, #102a38, #124e57 67%, #207c76);
+        color: #fff; padding: 2rem 2.3rem; border-radius: 18px; margin-bottom: 1.2rem; }
+    .rs-hero .eyebrow { color: #9dded2; letter-spacing: .16em; font-size: .72rem;
+        font-weight: 700; text-transform: uppercase; }
+    .rs-hero h1 { color: #fff; font-size: 2.45rem; margin: .25rem 0 .4rem; line-height: 1.1; }
+    .rs-hero p { color: #d5eeeb; font-size: 1rem; max-width: 690px; margin: 0; }
+    .rs-steps { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.4rem; }
+    .rs-steps span { background: #e4f0ef; color: #145e59; border-radius: 30px;
+        font-size: .8rem; font-weight: 600; padding: .42rem .85rem; }
+    div[data-testid="stFileUploader"] { border: 1px solid #cbdcdd; border-radius: 14px;
+        background: #fff; padding: .8rem; }
+    div[data-testid="stButton"] button[kind="primary"] { border-radius: 9px;
+        background: #116e65; border-color: #116e65; }
+    </style>
+    """, unsafe_allow_html=True)
 st.markdown("""
 <style>
 [class*="st-key-answer-card"] { border-left: 5px solid #2e86de !important; }
@@ -132,11 +156,21 @@ with st.sidebar:
     st.caption("Delineate env python: `%s`" % (config.DELINEATE_PYTHON or "NOT FOUND"))
     st.caption("Models load on first use (~1 min each on CPU) and stay loaded.")
 
-st.title("🛰️ Remote Sensing Agent V4")
-st.caption("Large images are cut into tiles · each tile: router → LAE-DINO and/or "
-           "SegEarth-OV3 and/or UniBuilding → VLM answer")
-st.caption("Agricultural field boundaries: full-scene SegEarth + Delineate → semantic verification "
-           "→ VLM-selected polygons. Field requests use native Delineate tiling and merging.")
+if ui_mode == "Studio":
+    st.markdown("""
+    <div class="rs-hero"><div class="eyebrow">Remote sensing · assisted analysis</div>
+    <h1>See more in every scene.</h1>
+    <p>Ask a question about an aerial or satellite image. RSAgent plans an analysis,
+    combines relevant model evidence, and presents results you can inspect.</p></div>
+    <div class="rs-steps"><span>01 &nbsp; Upload imagery</span><span>02 &nbsp; Ask a question</span>
+    <span>03 &nbsp; Review evidence &amp; outputs</span></div>
+    """, unsafe_allow_html=True)
+else:
+    st.title("🛰️ Remote Sensing Agent V4")
+    st.caption("Large images are cut into tiles · each tile: router → LAE-DINO and/or "
+               "SegEarth-OV3 and/or UniBuilding → VLM answer")
+    st.caption("Agricultural field boundaries: full-scene SegEarth + Delineate → semantic verification "
+               "→ VLM-selected polygons. Field requests use native Delineate tiling and merging.")
 
 # ---------------------------------------------------------------- input
 with st.expander("Explore analysis capabilities"):
@@ -147,6 +181,9 @@ with st.expander("Explore analysis capabilities"):
     st.caption("Results adapt to the plan and may include an answer, maps, masks, field polygons, "
                "tool outputs and an execution trace. Available results depend on the run.")
 
+if ui_mode == "Studio":
+    st.subheader("Start with an image")
+    st.caption("PNG, JPEG, WebP or TIFF · GeoTIFF spatial metadata is retained for supported exports")
 uploaded = st.file_uploader("Image", type=["png", "jpg", "jpeg", "tif", "tiff", "webp"])
 if uploaded is None:
     st.info("Upload an aerial / satellite image to begin.")
@@ -171,6 +208,8 @@ if st.session_state.get("upload_id") != upload_id:
 image = st.session_state["upload_image"]
 thumb = st.session_state["upload_thumb"]
 
+if ui_mode == "Studio":
+    st.caption("Choose a starting point or write a question. The planner decides which tools to use.")
 st.subheader("Compose an analysis")
 task = st.selectbox("Task", ["Write my own request"] + list(TASKS),
                     help="Task controls help draft a request. The planner decides which tools are needed.")
