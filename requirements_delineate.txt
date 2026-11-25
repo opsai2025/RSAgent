@@ -1,0 +1,17 @@
+# Install in a separate Python 3.11/3.12 environment with GDAL bindings.
+# Use conda-forge gdal to avoid Windows source builds; then pip install this file.
+# Torch CPU/CUDA build should be chosen for the machine.
+numpy>=1.26,<2.4
+# QGIS 3.34 GDAL provider specifically needs numpy==1.26.4 (NumPy 1 ABI).
+torch>=2.6
+ultralytics==8.3.148
+opencv-python==4.11.0.86
+huggingface-hub==0.32.4
+PyYAML==6.0.2
+rasterio==1.4.3
+shapely==2.1.1
+numba==0.62.1
+llvmlite==0.45.1
+psutil
+tornado==6.5.1
+tqdm==4.67.1

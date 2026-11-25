@@ -1,0 +1,5 @@
+Look for areas of land that show no signs of agricultural activity or human exploitation.
+These areas should not contain plowed or furrowed soil, cultivated fields, human-made orchards, or planted tree cover.
+They should also be free of houses, buildings, and other human-made structures.
+The goal is to identify natural or barren lands with no visible evidence of human intervention or ownership.
+create a mask from these grounds.

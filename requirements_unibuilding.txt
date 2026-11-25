@@ -1,0 +1,9 @@
+# Install ONLY into the UniBuilding worker environment (Python 3.10+).
+# Existing geopython already has these; do not change LAE/SAM for this tool.
+# The local sample's restricted loader requires NumPy 2 + modern torch.
+torch>=2.6
+numpy>=2.0
+rasterio
+opencv-python
+Pillow
+# Fiona is required only for optional GIS polygon export, not this worker.

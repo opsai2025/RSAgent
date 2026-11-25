@@ -1,0 +1,14 @@
+# Install into the environment that runs `streamlit run app.py`.
+# Each model worker also needs its own upstream environment and checkpoint.
+streamlit>=1.38
+openai>=1.40
+httpx
+pydantic>=2.7
+python-dotenv>=1.0
+numpy
+Pillow
+scipy          # tool-mask connected components (opencv-python also works)
+rasterio>=1.4  # source-aligned class IDs, field masks and GeoTIFF metadata
+psutil         # clean up native Delineate subprocesses on timeout
+# UniBuilding dependencies stay in its own worker environment;
+# see requirements_unibuilding.txt. No new LAE/SAM model dependencies.

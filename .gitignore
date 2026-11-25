@@ -1,0 +1,26 @@
+# Local credentials and machine settings
+.env
+.env.*
+!.env.example
+.vscode/
+
+# Python environments and caches
+.venv*/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+
+# Generated runs and machine-specific validation artifacts
+runs/
+logs/
+validation/
+
+# Large external model assets and datasets are installed separately
+weights/
+checkpoints/
+data/
+*.pth
+*.pt
+*.ckpt
+*.safetensors
