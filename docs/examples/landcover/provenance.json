@@ -1,0 +1,103 @@
+{
+  "question": "Create a land use land cover classification map for this image.",
+  "source_image": "P0127.png",
+  "source_sha256": "3aa63401e98bf6e764abb32163455cce16c8c29c5037ea688ec550b838f6360f",
+  "image_size_px": [
+    637,
+    693
+  ],
+  "crop": "none; full image",
+  "models": "Real local UniBuild and SegEarth-OV3/SAM 3 inference on CPU",
+  "planning": "Plan compiled by local rules and supplied to orchestrator; router not called",
+  "vlm": "Not called; remote VLM deliberately disabled, plain map uses model outputs",
+  "sam3_sha256": "9999e2341ceef5e136daa386eecb55cb414446a00ac2b55eb2dfd2f7c3cf8c9e",
+  "status_steps": [
+    {
+      "name": "Router",
+      "status": "skipped",
+      "seconds": 0.0,
+      "detail": "plan given by the caller"
+    },
+    {
+      "name": "UniBuilding building detection",
+      "status": "ok",
+      "seconds": 17.2,
+      "detail": "409 building components · 10.0% building pixels"
+    },
+    {
+      "name": "SegEarth-OV3 segmentation",
+      "status": "ok",
+      "seconds": 121.1,
+      "detail": "classes ['grass', 'tree', 'meadow', 'road', 'water', 'bareland'] · original RGB input"
+    },
+    {
+      "name": "Semantic building exclusion",
+      "status": "ok",
+      "seconds": 0.1,
+      "detail": "43973 UniBuilding pixels protected; 162 non-building labels removed; coverage and regions recomputed before decisions"
+    },
+    {
+      "name": "VLM",
+      "status": "skipped",
+      "seconds": 0.0,
+      "detail": "skipped: plain map, nothing to find or select"
+    },
+    {
+      "name": "Render classification map",
+      "status": "ok",
+      "seconds": 0.2,
+      "detail": "Classification mask · semantic class pixels, UniBuilding component pixels · [run directory]\\classification_map.png"
+    }
+  ],
+  "class_coverage": [
+    {
+      "id": 0,
+      "name": "background/unclassified",
+      "pixels": 236294,
+      "coverage_percent": 53.527878017673935
+    },
+    {
+      "id": 1,
+      "name": "buildings",
+      "pixels": 43973,
+      "coverage_percent": 9.961240573485473
+    },
+    {
+      "id": 2,
+      "name": "grass",
+      "pixels": 38899,
+      "coverage_percent": 8.811823097537383
+    },
+    {
+      "id": 3,
+      "name": "tree",
+      "pixels": 52446,
+      "coverage_percent": 11.880636370432288
+    },
+    {
+      "id": 4,
+      "name": "meadow",
+      "pixels": 26551,
+      "coverage_percent": 6.014620300334586
+    },
+    {
+      "id": 5,
+      "name": "road",
+      "pixels": 41332,
+      "coverage_percent": 9.36297262827875
+    },
+    {
+      "id": 6,
+      "name": "water",
+      "pixels": 0,
+      "coverage_percent": 0.0
+    },
+    {
+      "id": 7,
+      "name": "bareland",
+      "pixels": 1946,
+      "coverage_percent": 0.4408290122575837
+    }
+  ],
+  "caveat": "Predictions are not independently validated; source PNG has no georeferencing."
+}

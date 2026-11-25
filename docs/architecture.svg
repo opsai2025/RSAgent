@@ -2,8 +2,8 @@
   <title id="title">RSAgent architecture</title>
   <desc id="desc">An image and question go to the planner. The orchestrator runs selected model workers, optionally uses vision language reasoning, and returns answers, visualizations and geospatial artifacts. Field requests combine segmentation, building masks and field proposals.</desc>
   <defs>
-    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#091625"/><stop offset="1" stop-color="#102a38"/></linearGradient>
-    <linearGradient id="accent"><stop stop-color="#5ee4c4"/><stop offset="1" stop-color="#6ebaff"/></linearGradient>
+    <linearGradient id="bg" x2="1" y2="1"><stop stop-color="#111d43"/><stop offset="1" stop-color="#143c52"/></linearGradient>
+    <linearGradient id="accent"><stop stop-color="#64e8c3"/><stop offset=".5" stop-color="#7aa9ff"/><stop offset="1" stop-color="#ffad82"/></linearGradient>
     <marker id="arrow" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse"><path d="M0 0 L10 5 L0 10 Z" fill="#6ee0d0"/></marker>
     <style>
       text{font-family:Inter,Segoe UI,Arial,sans-serif;fill:#eef8f7} .muted{fill:#a8c0ca;font-size:21px} .small{fill:#a8c0ca;font-size:18px} .label{fill:#6ee0d0;font-weight:700;font-size:18px;letter-spacing:2px} .heading{font-size:26px;font-weight:700} .card{fill:#142d3b;stroke:#315267;stroke-width:2} .line{fill:none;stroke:#6ee0d0;stroke-width:3;marker-end:url(#arrow)}
@@ -40,16 +40,16 @@
   <path d="M940 383 V438" class="line"/>
   <rect x="70" y="452" width="1460" height="315" rx="24" fill="#0d2331" stroke="#315267" stroke-width="2"/>
   <text x="100" y="497" class="label">SELECTED MODEL WORKERS  /  SEPARATE PYTHON ENVIRONMENTS</text>
-  <rect x="100" y="525" width="325" height="195" rx="16" class="card"/>
+  <rect x="100" y="525" width="325" height="195" rx="16" fill="#273867" stroke="#788ff0" stroke-width="2"/>
   <text x="124" y="568" font-size="25" font-weight="700">LAE-DINO</text><text x="124" y="603" class="muted">Object detection</text>
   <text x="124" y="644" class="small">Text-guided classes → boxes</text><text x="124" y="672" class="small">and scores, filtered by NMS.</text>
-  <rect x="444" y="525" width="325" height="195" rx="16" class="card"/>
+  <rect x="444" y="525" width="325" height="195" rx="16" fill="#164b4a" stroke="#50c2a6" stroke-width="2"/>
   <text x="468" y="568" font-size="25" font-weight="700">SegEarth-OV-3</text><text x="468" y="603" class="muted">Land-cover segmentation</text>
   <text x="468" y="644" class="small">Open-vocabulary semantic</text><text x="468" y="672" class="small">class masks and coverage.</text>
-  <rect x="788" y="525" width="325" height="195" rx="16" class="card"/>
+  <rect x="788" y="525" width="325" height="195" rx="16" fill="#624052" stroke="#e99a9a" stroke-width="2"/>
   <text x="812" y="568" font-size="25" font-weight="700">UniBuild</text><text x="812" y="603" class="muted">Building extraction</text>
   <text x="812" y="644" class="small">Building probability, mask</text><text x="812" y="672" class="small">and connected components.</text>
-  <rect x="1132" y="525" width="368" height="195" rx="16" class="card"/>
+  <rect x="1132" y="525" width="368" height="195" rx="16" fill="#564321" stroke="#d4a65c" stroke-width="2"/>
   <text x="1156" y="568" font-size="25" font-weight="700">Delineate Anything v2</text><text x="1156" y="603" class="muted">Field delineation</text>
   <text x="1156" y="644" class="small">Full-scene field candidates</text><text x="1156" y="672" class="small">and polygon geometry.</text>
 

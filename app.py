@@ -44,22 +44,30 @@ with st.sidebar:
 if ui_mode == "Studio":
     st.markdown("""
     <style>
-    .stApp { background: #f5f8fb; }
-    [data-testid="stSidebar"] { background: #ecf2f5; }
+    .stApp { background: #f5f7ff; }
+    [data-testid="stSidebar"] { background: #edf1ff; }
     [data-testid="stMainBlockContainer"] { padding-top: 2.2rem; max-width: 1500px; }
-    .rs-hero { background: linear-gradient(115deg, #102a38, #124e57 67%, #207c76);
-        color: #fff; padding: 2rem 2.3rem; border-radius: 18px; margin-bottom: 1.2rem; }
-    .rs-hero .eyebrow { color: #9dded2; letter-spacing: .16em; font-size: .72rem;
+    .rs-hero { background: radial-gradient(circle at 85% 10%, #5846a5 0%, transparent 34%),
+        linear-gradient(115deg, #152653 0%, #164d78 56%, #167e85 100%);
+        color: #fff; padding: 2.2rem 2.4rem; border-radius: 22px; margin-bottom: 1.2rem;
+        box-shadow: 0 16px 38px rgba(37, 58, 120, .15); }
+    .rs-hero .eyebrow { color: #a7f0df; letter-spacing: .16em; font-size: .72rem;
         font-weight: 700; text-transform: uppercase; }
     .rs-hero h1 { color: #fff; font-size: 2.45rem; margin: .25rem 0 .4rem; line-height: 1.1; }
-    .rs-hero p { color: #d5eeeb; font-size: 1rem; max-width: 690px; margin: 0; }
+    .rs-hero p { color: #e1efff; font-size: 1rem; max-width: 690px; margin: 0; }
     .rs-steps { display: flex; flex-wrap: wrap; gap: .5rem; margin: 1rem 0 1.4rem; }
-    .rs-steps span { background: #e4f0ef; color: #145e59; border-radius: 30px;
+    .rs-steps span { background: #e4eaff; color: #304a91; border-radius: 30px;
         font-size: .8rem; font-weight: 600; padding: .42rem .85rem; }
-    div[data-testid="stFileUploader"] { border: 1px solid #cbdcdd; border-radius: 14px;
+    .rs-steps span:nth-child(2) { background: #e0f5ef; color: #116b5f; }
+    .rs-steps span:nth-child(3) { background: #fff0df; color: #8b4c12; }
+    .rs-capabilities { display: flex; flex-wrap: wrap; gap: .5rem; margin-top: 1.15rem; }
+    .rs-capabilities span { background: rgba(255,255,255,.14); color: #fff;
+        border: 1px solid rgba(255,255,255,.23); border-radius: 8px; padding: .35rem .6rem;
+        font-size: .76rem; font-weight: 600; }
+    div[data-testid="stFileUploader"] { border: 1px solid #cdd8f0; border-radius: 14px;
         background: #fff; padding: .8rem; }
     div[data-testid="stButton"] button[kind="primary"] { border-radius: 9px;
-        background: #116e65; border-color: #116e65; }
+        background: #3b5ac4; border-color: #3b5ac4; }
     </style>
     """, unsafe_allow_html=True)
 st.markdown("""
@@ -161,7 +169,9 @@ if ui_mode == "Studio":
     <div class="rs-hero"><div class="eyebrow">Remote sensing · assisted analysis</div>
     <h1>See more in every scene.</h1>
     <p>Ask a question about an aerial or satellite image. RSAgent plans an analysis,
-    combines relevant model evidence, and presents results you can inspect.</p></div>
+    combines relevant model evidence, and presents results you can inspect.</p>
+    <div class="rs-capabilities"><span>🔎 Objects</span><span>🌿 Land cover</span>
+    <span>🏠 Buildings</span><span>🌾 Fields</span></div></div>
     <div class="rs-steps"><span>01 &nbsp; Upload imagery</span><span>02 &nbsp; Ask a question</span>
     <span>03 &nbsp; Review evidence &amp; outputs</span></div>
     """, unsafe_allow_html=True)

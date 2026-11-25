@@ -1,6 +1,7 @@
 # Install into the environment that runs `streamlit run app.py`.
 # Each model worker also needs its own upstream environment and checkpoint.
-streamlit>=1.38
+# Dynamic tabs and expanders use key, on_change, and open state (Streamlit 1.55+).
+streamlit>=1.55
 openai>=1.40
 httpx
 pydantic>=2.7

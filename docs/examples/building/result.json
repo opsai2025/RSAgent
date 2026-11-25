@@ -1,0 +1,38 @@
+﻿{
+    "question_requested":  "Find the largest building and create a binary mask for it.",
+    "method":  "Offline UniBuild inference via RSAgent smoke test; VLM stubbed to retain all, then RSAgent connected components ranked by pixel area. This is not a live router or VLM decision.",
+    "source":  "images/P0154.png",
+    "source_metadata":  {
+                            "imagesource":  "GoogleEarth",
+                            "gsd":  0.509789065334
+                        },
+    "source_sha256":  "7274530d8fb02e44cfcbf216c3317ca67529fd2cf93d1e0b327bf59d014a446d",
+    "image_size":  [
+                       1212,
+                       923
+                   ],
+    "model":  "UniBuild DINOv3-Base HR-DPT",
+    "checkpoint_filename":  "unibuild_dinov3_base_hrdpt.pth",
+    "checkpoint_sha256":  "334146cbbbc7fa17afc4e0c558af1bfa029ce579bbed28100cb5a6a4f231dac0",
+    "device":  "cpu",
+    "probability_threshold":  0.5,
+    "connectivity":  8,
+    "min_component_area_px":  9,
+    "predicted_components":  64,
+    "selected_component":  {
+                               "id":  "b0",
+                               "bbox":  [
+                                            0.3276,
+                                            0.0141,
+                                            0.613,
+                                            0.2134
+                                        ],
+                               "area_px":  20437
+                           },
+    "selection":  "largest predicted connected component by pixel area",
+    "mask":  "largest-mask.png",
+    "mask_sha256":  "272e0b11de7bf80783a21e315bc829265037891a308823b873d1fd3abbd9a460",
+    "pixels_may_merge":  true,
+    "smoke_test_question":  "show me the buildings as a mask",
+    "source_crop":  "none; entire image"
+}

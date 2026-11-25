@@ -26,25 +26,35 @@ Field requests use **full-scene** Delineate tiling and merging, together with Se
 
 ## 💡 Examples
 
-![Illustrative request and result, showing how a question is routed and what evidence may be returned](docs/example-workflow.svg)
+### 1. Find and mask the largest building
 
-*The illustration is schematic, not a model prediction.* Actual answers and counts depend on the image, model settings and selected evidence.
+**Question:** “Find the largest building and create a binary mask for it.”
 
-| Question | Typical processing | What you can inspect |
-| --- | --- | --- |
-| “Show buildings as a mask.” | UniBuild → building components → optional VLM selection | Building mask, components and trace. |
-| “Map water and roads.” | SegEarth → class map; a plain map can skip VLM review | Color map, class IDs and pixel coverage. |
-| “Delineate agricultural fields near buildings.” | UniBuild + SegEarth + Delineate → semantic checks → VLM review | Field proposals, selected polygons, masks and trace. |
+![Real aerial image P0154 and the largest predicted building component highlighted in orange](docs/examples/building/example-card.png)
 
-A local UniBuild smoke test on one existing image produced 235 connected components and 34.66% building pixels, matching that image’s saved reference mask. Its VLM was **stubbed**, and this is a software check, not an accuracy claim or a result to expect on another image.
+On the complete `images/P0154.png` scene (1,212 × 923 pixels), the real UniBuild worker predicted 64 connected components at threshold 0.5. Selecting the largest by pixel area produced a **20,437-pixel** mask. Download the [original image](docs/examples/building/P0154.png), [animated comparison](docs/examples/building/example.gif), [binary mask](docs/examples/building/largest-mask.png) and [run details](docs/examples/building/result.json).
+
+This is an **offline demonstration**: the VLM was stubbed to retain all proposals, and the largest component was selected deterministically, not by a live planner or VLM. Connected roofs may merge, so the highlighted component is a model prediction, not a verified individual building.
+
+### 2. Create a land-use / land-cover classification
+
+**Question:** “Create a land use land cover classification map for this image.”
+
+![Real aerial image P0127 and its predicted land-cover classification map](docs/examples/landcover/example-card.png)
+
+The full `images/P0127.png` scene (637 × 693 pixels) was processed locally by UniBuild and SegEarth. In the predicted class-ID mask, **53.5%** of pixels were background/unclassified, **11.9%** were tree, **10.0%** buildings, and **9.4%** road (rounded). These are proportions of the model output, not measured land-cover accuracy. The visible running track is partly labeled as road, illustrating why predictions need independent review.
+
+The agent's output reports 409 building components and lists the pixel coverage for all classes. Download the [original image](docs/examples/landcover/P0127.png), [class-ID mask](docs/examples/landcover/classification_ids.png), [pixel-grid GeoTIFF](docs/examples/landcover/classification_ids.tif), [class legend](docs/examples/landcover/classification_map.json), or [run provenance](docs/examples/landcover/provenance.json).
+
+The run used a locally supplied, rule-validated plan for the general map; no router or VLM endpoint was called. The input is a PNG without a geographic CRS, so its mask uses a pixel grid. The source folder's metadata identifies the example scenes as Google Earth imagery; check the source imagery's terms before reuse.
 
 ## 🧰 Requirements at a glance
 
-This repository contains the **agent**, not the external model repositories, checkpoints, imagery or credentials. Install only the model workers needed for your questions; field delineation needs SegEarth, UniBuild and Delineate. A model may also be needed for a follow-up mask or combined request.
+This repository contains the **agent and example images**, but not the external model repositories, checkpoints, your datasets or credentials. Install only the model workers needed for your questions; field delineation needs SegEarth, UniBuild and Delineate. A model may also be needed for a follow-up mask or combined request.
 
 | Component | Environment and files | Needed for |
 | --- | --- | --- |
-| Agent UI | Modern Python, `requirements_agent.txt`, text and image-capable OpenAI-compatible endpoint | Streamlit and planning/review |
+| Agent UI | Modern Python, `requirements_agent.txt` (Streamlit ≥1.55), text and image-capable OpenAI-compatible endpoint | Streamlit and planning/review |
 | LAE-DINO | Separate upstream Python 3.8 / MMDetection environment, LAE checkpoint and local BERT files | Object detection |
 | SegEarth | Modern PyTorch/SAM 3 environment, `requirements_segearth.txt`, SAM 3 checkpoint | Land-cover maps and field evidence |
 | UniBuild | Separate environment, `requirements_unibuilding.txt`, UniBuild source and checkpoint | Buildings and field evidence |
@@ -72,14 +82,36 @@ git clone https://github.com/zhu-xlab/UniBuild.git ~/rsagent-models/UniBuild
 git clone https://github.com/Lavreniuk/Delineate-Anything.git ~/rsagent-models/Delineate-Anything
 ```
 
-You can clone only the projects you need. Obtain weights separately from the official sources:
+You can clone only the projects you need. GitHub clones contain source code, not the following model weights. Download the files separately from their official publishers:
 
 | Project | Source and checkpoint | Additional notes |
 | --- | --- | --- |
-| LAE-DINO | [Source](https://github.com/jaychempan/LAE-DINO) · [LAE-1M weights](https://huggingface.co/ML4Sustain/LAE-DINO) | Download the Swin-T LAE-1M checkpoint and [bert-base-uncased](https://huggingface.co/google-bert/bert-base-uncased) files. |
-| SegEarth | [Source](https://github.com/earth-insights/SegEarth-OV-3) · [SAM 3](https://huggingface.co/facebook/sam3) | SAM 3 access may require accepting terms and a Hugging Face token. |
-| UniBuild | [Source](https://github.com/zhu-xlab/UniBuild) · [weights](https://drive.google.com/drive/folders/1YZ-bbXoZ1rOKQayRL79bLdhIE_CcU3K9) | This adapter expects `unibuild_dinov3_base_hrdpt.pth`. |
-| Delineate | [Source](https://github.com/Lavreniuk/Delineate-Anything) · [v2 weights](https://huggingface.co/MykolaL/DelineateAnything/resolve/main/DelineateAnythingv2.pt) | This upstream project uses AGPL-3.0. |
+| LAE-DINO | [LAE-1M weights on Hugging Face](https://huggingface.co/ML4Sustain/LAE-DINO/tree/main/checkpoints) and [BERT on Hugging Face](https://huggingface.co/google-bert/bert-base-uncased/tree/main) | `lae_dino_swint_lae1m-28ca3a15.pth` plus a local `bert-base-uncased` directory with model, config and tokenizer files. |
+| SegEarth | [SAM 3 on Hugging Face](https://huggingface.co/facebook/sam3) | `sam3.pt` is gated: request access, accept the terms, and authenticate with an approved Hugging Face account. This is SAM 3, not SAM 3.1. |
+| UniBuild | [Upstream checkpoint](https://drive.google.com/drive/folders/1YZ-bbXoZ1rOKQayRL79bLdhIE_CcU3K9) | Download `unibuild_dinov3_base_hrdpt.pth` from the upstream Google Drive; the full checkpoint includes the DINOv3 backbone. |
+| Delineate | [v2 weights on Hugging Face](https://huggingface.co/MykolaL/DelineateAnything) | Download `DelineateAnythingv2.pt`, not the original v1 checkpoint. The upstream project uses AGPL-3.0. |
+
+For example, the [Hugging Face CLI](https://huggingface.co/docs/huggingface_hub/guides/cli) can download only the needed files. Install it in a **separate download environment** so upgrading it does not alter an older model environment:
+
+```bash
+conda create -n rsagent-download python=3.12
+conda activate rsagent-download
+python -m pip install -U huggingface_hub
+mkdir -p ~/rsagent-models/weights
+
+# LAE-DINO detector and the BERT files it uses:
+hf download ML4Sustain/LAE-DINO checkpoints/lae_dino_swint_lae1m-28ca3a15.pth --local-dir ~/rsagent-models/weights
+hf download google-bert/bert-base-uncased config.json pytorch_model.bin tokenizer.json tokenizer_config.json vocab.txt --local-dir ~/rsagent-models/weights/bert-base-uncased
+
+# Request and receive access to facebook/sam3 first, then authenticate:
+hf auth login
+hf download facebook/sam3 sam3.pt --local-dir ~/rsagent-models/weights
+
+# Field delineation; UniBuild weights must be downloaded separately from its link above:
+hf download MykolaL/DelineateAnything DelineateAnythingv2.pt --local-dir ~/rsagent-models/weights
+```
+
+Skip commands for tools you will not use. Download `unibuild_dinov3_base_hrdpt.pth` from UniBuild’s link above and place it in `~/rsagent-models/weights/`. Keep the resulting directory structure: the LAE checkpoint is in the `weights/checkpoints/` subdirectory. Do not put access tokens in source control. A local `SAM3_CHECKPOINT` avoids an additional download; if it is blank or does not point to a file, the worker tries `<SEGEARTH_ROOT>/weights/sam3/sam3.pt` and then downloads `facebook/sam3` through Hugging Face authentication.
 
 ### 2. Create the environments
 
@@ -87,7 +119,7 @@ Create a separate environment for each selected model. Inside it, follow the ups
 
 ```bash
 # Agent UI, and optionally SegEarth in the same modern environment:
-conda create -n SAM python=3.11
+conda create -n SAM python=3.12
 conda activate SAM
 # Install the PyTorch build and SegEarth/SAM 3 dependencies for your system first.
 python -m pip install -r requirements_agent.txt
@@ -104,7 +136,7 @@ conda activate rsagent-delineate
 python -m pip install -r requirements_delineate.txt
 ```
 
-For LAE-DINO, create its **separate** environment using the upstream Python 3.8/MMDetection instructions. Install model-specific dependencies there; it does not use `requirements_agent.txt`. Choose fresh environment names if these names already exist. GDAL’s native library and Python bindings must match. These requirement files are integration starting points, not a complete cross-platform lockfile. Check that SegEarth contains `sam3/`, UniBuild contains `infer_geotiff.py`, and Delineate contains `methods/main/inference.py` and `conf_sample.yaml`.
+For LAE-DINO, create its **separate** environment with `conda create -n LAE python=3.8` and `conda activate LAE`, then follow the [upstream MMDetection installation](https://github.com/jaychempan/LAE-DINO#installation-environment). Its published PyTorch/CUDA versions are an example for a specific system; select compatible builds for yours. LAE does not use `requirements_agent.txt`. Choose fresh environment names if these names already exist. GDAL’s native library and Python bindings must match. These requirement files are integration starting points, not a complete cross-platform lockfile. Check that SegEarth contains `sam3/assets/bpe_simple_vocab_16e6.txt.gz`, UniBuild contains `infer_geotiff.py`, and Delineate contains `methods/main/inference.py` and `conf_sample.yaml`.
 
 ### 3. Configure `.env`
 
@@ -116,8 +148,8 @@ OPENAI_BASE_URL=
 ROUTER_MODEL=your-text-model
 VLM_MODEL=your-image-capable-model
 LAE_DINO_ROOT=/home/user/rsagent-models/LAE-DINO
-LAE_CHECKPOINT=/home/user/rsagent-models/weights/lae_dino_swint_lae1m-28ca3a15.pth
-LAE_BERT_DIR=/home/user/rsagent-models/LAE-DINO/weights/bert-base-uncased
+LAE_CHECKPOINT=/home/user/rsagent-models/weights/checkpoints/lae_dino_swint_lae1m-28ca3a15.pth
+LAE_BERT_DIR=/home/user/rsagent-models/weights/bert-base-uncased
 SEGEARTH_ROOT=/home/user/rsagent-models/SegEarth-OV-3
 SAM3_CHECKPOINT=/home/user/rsagent-models/weights/sam3.pt
 UNIBUILD_REPO=/home/user/rsagent-models/UniBuild

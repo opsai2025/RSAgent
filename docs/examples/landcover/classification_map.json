@@ -1,0 +1,109 @@
+{
+  "class_table": [
+    {
+      "id": 0,
+      "name": "background/unclassified",
+      "color": [
+        0,
+        0,
+        0
+      ],
+      "pixels": 236294,
+      "coverage_percent": 53.527878017673935
+    },
+    {
+      "id": 1,
+      "name": "buildings",
+      "color": [
+        255,
+        59,
+        48
+      ],
+      "pixels": 43973,
+      "coverage_percent": 9.961240573485473
+    },
+    {
+      "id": 2,
+      "name": "grass",
+      "color": [
+        0,
+        122,
+        255
+      ],
+      "pixels": 38899,
+      "coverage_percent": 8.811823097537383
+    },
+    {
+      "id": 3,
+      "name": "tree",
+      "color": [
+        52,
+        199,
+        89
+      ],
+      "pixels": 52446,
+      "coverage_percent": 11.880636370432288
+    },
+    {
+      "id": 4,
+      "name": "meadow",
+      "color": [
+        255,
+        149,
+        0
+      ],
+      "pixels": 26551,
+      "coverage_percent": 6.014620300334586
+    },
+    {
+      "id": 5,
+      "name": "road",
+      "color": [
+        175,
+        82,
+        222
+      ],
+      "pixels": 41332,
+      "coverage_percent": 9.36297262827875
+    },
+    {
+      "id": 6,
+      "name": "water",
+      "color": [
+        0,
+        199,
+        190
+      ],
+      "pixels": 0,
+      "coverage_percent": 0.0
+    },
+    {
+      "id": 7,
+      "name": "bareland",
+      "color": [
+        255,
+        214,
+        10
+      ],
+      "pixels": 1946,
+      "coverage_percent": 0.4408290122575837
+    }
+  ],
+  "width": 637,
+  "height": 693,
+  "class_id_mapping": {
+    "0": "background/unclassified",
+    "1": "buildings",
+    "2": "grass",
+    "3": "tree",
+    "4": "meadow",
+    "5": "road",
+    "6": "water",
+    "7": "bareland"
+  },
+  "evidence": [
+    "semantic class pixels",
+    "UniBuilding component pixels"
+  ],
+  "coordinate_system": "pixel coordinates; source PNG has no georeferencing"
+}
