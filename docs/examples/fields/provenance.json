@@ -1,0 +1,72 @@
+{
+  "requested_question": "Find the three largest agricultural fields and create a binary mask for them.",
+  "actual_run": "Full-scene real UniBuild, SegEarth-OV3/SAM 3 and Delineate Anything v2 through the RSAgent field smoke pipeline. VLM transport stubbed to retain eligible proposals; deterministic postprocessing ranked by area. No external endpoint was called.",
+  "source_image": "P0157.png",
+  "source_sha256": "f8c15432aa0946bac13db9d5f6410bf0637fb0d7accb715296746f99e5824082",
+  "source_metadata": {
+    "image_source": "GoogleEarth",
+    "acquisition_date": null,
+    "gsd": 1.01415145755,
+    "gsd_units": "not specified"
+  },
+  "image_size_px": [
+    1124,
+    1214
+  ],
+  "crop": "none",
+  "selection": "Three largest semantically eligible candidate polygons by rasterized pixel area, sorted descending, ties by numeric field ID. Eligible includes uncertain proposals.",
+  "native_candidate_count": 133,
+  "eligible_candidate_count": 126,
+  "fields": [
+    {
+      "rank": 1,
+      "id": "f61",
+      "area_px": 123418,
+      "semantic_status": "supported",
+      "bbox_px": [
+        384.0,
+        640.0,
+        1030.0,
+        1069.0
+      ]
+    },
+    {
+      "rank": 2,
+      "id": "f11",
+      "area_px": 68620,
+      "semantic_status": "supported",
+      "bbox_px": [
+        826.0,
+        9.0,
+        1124.0,
+        352.0
+      ]
+    },
+    {
+      "rank": 3,
+      "id": "f14",
+      "area_px": 61972,
+      "semantic_status": "supported",
+      "bbox_px": [
+        26.0,
+        47.0,
+        430.0,
+        302.0
+      ]
+    }
+  ],
+  "union_mask_pixels": 254010,
+  "coordinate_system": "pixel grid; PNG has no geographic CRS",
+  "caveats": "Predictions are not ground truth; uncertain candidates were not reviewed by a VLM. Cropland boundaries can be incorrect, merged or truncated by image edges.",
+  "files": {
+    "input": "P0157.png",
+    "overlay": "overlay.png",
+    "binary_mask": "largest-three-mask.png",
+    "instance_ids": "largest-three-instance-ids.png"
+  },
+  "checkpoints": {
+    "sam3_sha256": "9999e2341ceef5e136daa386eecb55cb414446a00ac2b55eb2dfd2f7c3cf8c9e",
+    "delineate_sha256": "46700b8a279b07922953a11adaeb5e658d9a2384b6334c8e0a3090886218915a",
+    "unibuild_sha256": "334146cbbbc7fa17afc4e0c558af1bfa029ce579bbed28100cb5a6a4f231dac0"
+  }
+}

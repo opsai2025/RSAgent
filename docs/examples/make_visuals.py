@@ -70,7 +70,43 @@ def make_landcover():
     canvas.save(folder/'example-card.png',optimize=True)
     print('Created land-cover card from actual artifacts')
 
+def make_fields():
+    folder = ROOT/'fields'
+    data = json.loads((folder/'provenance.json').read_text(encoding='utf-8-sig'))
+    canvas = Image.new('RGB', (1600, 1100), '#111b38')
+    d = ImageDraw.Draw(canvas)
+    d.rounded_rectangle((40, 38, 1560, 1060), radius=32, fill='#18294c', outline='#3a568d', width=2)
+    d.text((76, 69), 'REAL IMAGE  /  OFFLINE EXAMPLE', font=font(21, True), fill='#72e7cc')
+    d.text((76, 109), 'Find and mask the three largest field proposals', font=font(40, True), fill='white')
+    d.text((76, 168), f"{data['source_image']}  •  Delineate + semantic evidence  •  ranked by pixel area", font=font(22), fill='#c3d4ef')
+    for x, label, filename, color in [(76, '01  SOURCE IMAGE', data['source_image'], '#85bcff'),
+                                      (824, '02  THREE LARGEST ELIGIBLE PROPOSALS', 'overlay.png', '#ffb27a')]:
+        d.text((x, 225), label, font=font(21, True), fill=color)
+        canvas.paste(rounded_image(folder/filename, (700, 540)), (x, 263))
+    d.rounded_rectangle((76, 834, 1524, 1017), radius=16, fill='#213960')
+    colors = ['#ffa233', '#45d7bd', '#ad90ff']
+    for i, field in enumerate(data['fields']):
+        x = 100+i*455
+        d.rounded_rectangle((x, 865, x+20, 885), radius=4, fill=colors[i])
+        d.text((x+32, 859), f"{field['rank']}  •  {field['area_px']:,} pixels", font=font(23, True), fill='white')
+        d.text((x+32, 896), f"{field['id']}  •  {field['semantic_status']}", font=font(18), fill='#d6e4f7')
+    d.text((100, 970), 'Offline selection by area; no live VLM review. Field boundaries are model predictions.', font=font(19), fill='#d6e4f7')
+    canvas.save(folder/'example-card.png', optimize=True)
+    frames = []
+    for label, filename in [('SOURCE IMAGE', data['source_image']), ('THREE SELECTED FIELD PROPOSALS', 'overlay.png')]:
+        frame = Image.new('RGB', (920, 790), '#111b38')
+        dr = ImageDraw.Draw(frame)
+        dr.rounded_rectangle((20, 20, 900, 770), radius=22, fill='#18294c')
+        dr.text((45, 42), label, font=font(23, True), fill='#7ae7cc')
+        frame.paste(rounded_image(folder/filename, (830, 632)), (45, 83))
+        dr.text((45, 732), 'Real model outputs  •  offline selection  •  no live VLM review', font=font(18), fill='#d6e4f7')
+        frames.append(frame.convert('P', palette=Image.Palette.ADAPTIVE, colors=256))
+    frames[0].save(folder/'example.gif', save_all=True, append_images=frames[1:], duration=[1800, 2300], loop=0, optimize=True)
+    print('Created field card and GIF from actual artifacts')
+
 if __name__=='__main__':
     make_building()
     if (ROOT/'landcover'/'classification_map.json').is_file():
         make_landcover()
+    if (ROOT/'fields'/'provenance.json').is_file():
+        make_fields()

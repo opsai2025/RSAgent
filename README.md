@@ -46,7 +46,21 @@ The full `images/P0127.png` scene (637 × 693 pixels) was processed locally by U
 
 The agent's output reports 409 building components and lists the pixel coverage for all classes. Download the [original image](docs/examples/landcover/P0127.png), [class-ID mask](docs/examples/landcover/classification_ids.png), [pixel-grid GeoTIFF](docs/examples/landcover/classification_ids.tif), [class legend](docs/examples/landcover/classification_map.json), or [run provenance](docs/examples/landcover/provenance.json).
 
-The run used a locally supplied, rule-validated plan for the general map; no router or VLM endpoint was called. The input is a PNG without a geographic CRS, so its mask uses a pixel grid. The source folder's metadata identifies the example scenes as Google Earth imagery; check the source imagery's terms before reuse.
+The run used a locally supplied, rule-validated plan for the general map; no router or VLM endpoint was called. The input is a PNG without a geographic CRS, so its mask uses a pixel grid.
+
+### 3. Mask the three largest field proposals
+
+**Question:** “Find the three largest agricultural fields and create a binary mask for them.”
+
+![Real aerial image P0157 and its three largest predicted field proposals](docs/examples/fields/example-card.png)
+
+On the full `images/P0157.png` scene (1,124 × 1,214 pixels), the local UniBuild, SegEarth and Delineate workers produced 133 field candidates; 126 passed the semantic eligibility checks. The three largest eligible proposals contain **123,418**, **68,620** and **61,972 pixels**, respectively. All three received semantic status `supported`; their union mask contains 254,010 pixels.
+
+The field smoke pipeline used a supplied delineation plan and a stubbed VLM that retained eligible proposals. The top three were then selected locally by rasterized pixel area, so this is **not a live VLM selection**. These are model predictions, not verified boundaries; the second proposal touches the image edge and may be incomplete. The PNG has no geographic CRS, so areas are pixels, not square metres.
+
+Download the [original image](docs/examples/fields/P0157.png), [animated comparison](docs/examples/fields/example.gif), [binary mask](docs/examples/fields/largest-three-mask.png), [instance-ID mask](docs/examples/fields/largest-three-instance-ids.png), [candidate ranking](docs/examples/fields/candidate_ranking.json), [selected pixel geometry](docs/examples/fields/selected_pixel_geometry.json), and [run provenance](docs/examples/fields/provenance.json).
+
+The source folder's metadata identifies these example scenes as Google Earth imagery; check the source imagery's terms before reuse.
 
 ## 🧰 Requirements at a glance
 
