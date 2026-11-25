@@ -16,7 +16,7 @@
 4. **Decide and present.** A vision-language model (VLM) can interpret the image and evidence; a plain map can bypass it. The UI shows the answer, visual results, trace and available downloads.
 
 | Worker | Purpose | Example request |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | LAE-DINO | Detect discrete objects | “Locate ships.” |
 | SegEarth-OV-3 / SAM 3 | Segment land-cover classes | “Map water and roads.” |
 | UniBuild | Extract building pixels and components | “Show buildings as a mask.” |
@@ -53,7 +53,7 @@ The run used a locally supplied, rule-validated plan for the general map; no rou
 This repository contains the **agent and example images**, but not the external model repositories, checkpoints, your datasets or credentials. Install only the model workers needed for your questions; field delineation needs SegEarth, UniBuild and Delineate. A model may also be needed for a follow-up mask or combined request.
 
 | Component | Environment and files | Needed for |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | Agent UI | Modern Python, `requirements_agent.txt` (Streamlit ≥1.55), text and image-capable OpenAI-compatible endpoint | Streamlit and planning/review |
 | LAE-DINO | Separate upstream Python 3.8 / MMDetection environment, LAE checkpoint and local BERT files | Object detection |
 | SegEarth | Modern PyTorch/SAM 3 environment, `requirements_segearth.txt`, SAM 3 checkpoint | Land-cover maps and field evidence |
@@ -85,7 +85,7 @@ git clone https://github.com/Lavreniuk/Delineate-Anything.git ~/rsagent-models/D
 You can clone only the projects you need. GitHub clones contain source code, not the following model weights. Download the files separately from their official publishers:
 
 | Project | Source and checkpoint | Additional notes |
-| --- | --- | --- |
+| :---: | :---: | :---: |
 | LAE-DINO | [LAE-1M weights on Hugging Face](https://huggingface.co/ML4Sustain/LAE-DINO/tree/main/checkpoints) and [BERT on Hugging Face](https://huggingface.co/google-bert/bert-base-uncased/tree/main) | `lae_dino_swint_lae1m-28ca3a15.pth` plus a local `bert-base-uncased` directory with model, config and tokenizer files. |
 | SegEarth | [SAM 3 on Hugging Face](https://huggingface.co/facebook/sam3) | `sam3.pt` is gated: request access, accept the terms, and authenticate with an approved Hugging Face account. This is SAM 3, not SAM 3.1. |
 | UniBuild | [Upstream checkpoint](https://drive.google.com/drive/folders/1YZ-bbXoZ1rOKQayRL79bLdhIE_CcU3K9) | Download `unibuild_dinov3_base_hrdpt.pth` from the upstream Google Drive; the full checkpoint includes the DINOv3 backbone. |
